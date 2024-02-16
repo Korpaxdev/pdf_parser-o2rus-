@@ -3,15 +3,14 @@ from pathlib import Path
 from PyPDF2 import PdfReader
 
 from utils.constants import TemporaryFiles
-from utils.file_utils import create_dir, remove_file_if_exists
+from utils.file_utils import create_dir, remove_file_if_exists, raise_exception_if_file_not_exists
 
 
 class PdfParser:
     def __init__(self, file_path: Path | str):
         if not isinstance(file_path, Path):
             file_path = Path(file_path)
-        if not file_path.is_file() and not file_path.exists():
-            raise FileExistsError("Файл не существует")
+        raise_exception_if_file_not_exists(file_path)
         self._file_path = file_path
         self._parser = PdfReader(self._file_path)
         self._temp_dir = create_dir(TemporaryFiles.TEMP_DIR)

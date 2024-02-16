@@ -1,0 +1,12 @@
+class Patterns:
+    BLOCK_PARAGRAPH = r"-71\s*5.3.\d+\?{0,2}"
+    BLOCK_ITEM = BLOCK_PARAGRAPH + r"\s+[aA-zZ]+[/&#\s\w]+-\s+\w+(?=\s)"
+    BLOCK_DATA_LENGTH = r"Data\s*Length.*?(?P<length>\w+)"
+    BLOCK_DATA_PARAMETER_GROUP = r"Parameter\s*Group"
+    BLOCK_DATA_PGN = BLOCK_DATA_PARAMETER_GROUP + r"\s*(?P<pgn>\d+)"
+    BLOCK_DATA_ID = BLOCK_DATA_PARAMETER_GROUP + r".*\(\s*(?P<id>\w+)\s*\)"
+    PARAMS_BLOCK_START = r"POS Length\s*Parameter\s*Name\s*SPN and paragraph\s*Approved"
+    PARAMS = r"(?P<length>\d+\s*(?:bytes?|bits?))\s*(?P<name>.*?)\s*(?P<spn>\d{2,})\s*(?P<paragraph>[-\w]+\s*.*?)(?=\s)"
+    PARAM_BLOCK_PATTERN = r"\s*{paragraph}\s*{name}"
+    PARAM_DETAIL_SLOT_SCALING_PATTERN = r"Slot\s*Scaling:\s*(?P<slot_scaling>.*?)(?=,)"
+    PARAM_DETAIL_SLOT_RANGE = r"Slot\s*Range:\s*(?P<slot_range>.*?)(?=\s*[A-Z])"
