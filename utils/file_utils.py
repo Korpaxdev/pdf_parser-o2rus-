@@ -1,5 +1,6 @@
 from os import remove
 from pathlib import Path
+from shutil import rmtree
 
 
 def create_dir(path: Path):
@@ -16,3 +17,8 @@ def remove_file_if_exists(path: Path):
 def raise_exception_if_file_not_exists(path: Path):
     if not path.is_file() and not path.exists():
         raise FileExistsError(f"Файл по пути {path.absolute()} не найден")
+
+
+def remove_dir_if_exists(path: Path):
+    if path.exists():
+        rmtree(path)

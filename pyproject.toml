@@ -8,8 +8,12 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 pypdf2 = "^3.0.1"
-black = "^24.2.0"
+sqlalchemy = "^2.0.27"
+rich = "^13.7.0"
 
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
 
 [build-system]
 requires = ["poetry-core"]
