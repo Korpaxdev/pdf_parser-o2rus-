@@ -2,7 +2,8 @@
 
 ## Запуск:
 
-`python main.py <Путь до pdf файла>`
+- Устанавливаем зависимости с помощью `poetry install` или `pip install -r requirements.txt`
+- Осуществляем запуск с помощью `python main.py <Путь до pdf файла>` или `python3 main.py <Путь до pdf файла>`
 
 ## Справка:
 
