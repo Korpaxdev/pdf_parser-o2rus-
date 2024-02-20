@@ -37,8 +37,8 @@ class App:
         if not self._args.only_save_db:
             self._pdf_parser.parse()
             self._text_parser.parse()
-            self._console.print(WarningMessages.CHECK_RESULT_FILE_BEFORE_SAVE % ResultFiles.RESULT_FILE.absolute())
-            allow_save_to_db = self._get_user_answer(Messages.SAVE_TO_DB_PROMPT, SaveToDB.LIST_VALUES, SaveToDB.YES)
+            self._console.print(WarningMessages.CHECK_RESULT_FILE_BEFORE_SAVE)
+            allow_save_to_db = self._get_user_answer(Messages.SAVE_TO_DB_PROMPT, SaveToDB.LIST_VALUES, SaveToDB.NO)
 
             if allow_save_to_db == SaveToDB.YES:
                 self._save_result_to_db()
@@ -72,7 +72,7 @@ class App:
         while user_answer not in valid_names:
             if not user_answer and default:
                 return default
-            self._console.print(ErrorMessages.ANSWER_ERROR % " | ".join(valid_names))
+            self._console.print(ErrorMessages.SAVE_TO_DB_ANSWER)
             user_answer = self._console.input(prompt).strip().upper()
         return user_answer
 
@@ -98,7 +98,7 @@ class App:
         with self._console.status(Messages.SAVING_DATA_TO_DB) as status:
             self._db_service.clear_database()
             self._db_service.insert_all(self._create_block_models_from_file(ResultFiles.RESULT_FILE))
-            status.console.log(SuccessMessages.SUCCESS_SAVE_TO_DB % self._db_service.db_path.absolute())
+            status.console.log(SuccessMessages.SUCCESS_SAVE_TO_DB)
 
     @staticmethod
     def _configure_arg_parser():

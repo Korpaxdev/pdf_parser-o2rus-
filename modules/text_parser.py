@@ -42,7 +42,7 @@ class TextParser:
 
         with self._result_file.open("w") as file:
             json.dump(data_list, file, indent=4)
-        self._console.log(SuccessMessages.RESULT_FILE_CREATED % self._result_file.absolute())
+        self._console.log(SuccessMessages.RESULT_FILE_CREATED)
 
     def _find_params(self, block_text: str):
         params_table_head = self._find_value(Patterns.PARAMS_TABLE_HEAD, block_text)
