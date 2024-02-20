@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -8,8 +6,8 @@ from utils.constants import ResultFiles
 
 
 class DBService:
-    def __init__(self, db_path: Path = Path(ResultFiles.RESULT_DB)):
-        self.db_path = db_path
+    def __init__(self):
+        self.db_path = ResultFiles.RESULT_DB
         self._engine = create_engine(f"sqlite:///{ResultFiles.RESULT_DB}")
         self._Session = sessionmaker(bind=self._engine)
 

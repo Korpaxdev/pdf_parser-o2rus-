@@ -86,6 +86,7 @@ class App:
                         cat_id=block["cat_id"],
                         data_length=block["data_length"],
                         name=block_params["name"],
+                        rus_name=block_params["rus_name"],
                         length=block_params["length"],
                         scaling=block_params["scaling"],
                         range=block_params["range"],
