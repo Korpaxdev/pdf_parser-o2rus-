@@ -43,6 +43,10 @@ class Messages:
     TEXT_PARSING_START = "Произвожу парсинг блоков"
     SAVE_TO_DB_PROMPT = "Желаете сохранить данные в базу данных?(Y/n): "
     SAVING_DATA_TO_DB = "Произвожу сохранение данных в базу данных"
+    ONLY_SAVE_DB = (
+        f"Позволяет сохранить данные из {ResultFiles.RESULT_FILE.name} в базу данных."
+        f"Использование возможно только в случае уже сгенерированного файла {ResultFiles.RESULT_FILE.name}"
+    )
 
 
 class SaveToDB:

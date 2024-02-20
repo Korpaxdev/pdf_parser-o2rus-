@@ -2,6 +2,8 @@ from os import remove
 from pathlib import Path
 from shutil import rmtree
 
+from utils.exceptions import FileNotFoundException
+
 
 def create_dir(path: Path):
     path.mkdir(parents=True, exist_ok=True)
@@ -15,8 +17,8 @@ def remove_file_if_exists(path: Path):
 
 
 def raise_exception_if_file_not_exists(path: Path):
-    if not path.is_file() and not path.exists():
-        raise FileExistsError(f"Файл по пути {path.absolute()} не найден")
+    if not path.exists() or not path.is_file():
+        raise FileNotFoundException(FileNotFoundException.message % path.absolute())
 
 
 def remove_dir_if_exists(path: Path):

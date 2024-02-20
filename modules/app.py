@@ -1,5 +1,6 @@
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from rich.console import Console
@@ -12,18 +13,20 @@ from utils.constants import (
     TemporaryFiles,
     Messages,
     ErrorMessages,
-    SaveToDB,
-    ResultFiles,
     WarningMessages,
+    ResultFiles,
+    SaveToDB,
     SuccessMessages,
 )
 from utils.exceptions import FileNotFoundException, FileExtensionException
-from utils.file_utils import remove_dir_if_exists
+from utils.file_utils import remove_dir_if_exists, raise_exception_if_file_not_exists
 
 
 class App:
     def __init__(self):
         self._clear_temp_directory()
+        self._arg_parser = self._configure_arg_parser()
+        self._args = self._arg_parser.parse_args()
         self._console = Console()
         self._file_path = self._get_file_path()
         self._pdf_parser = PdfParser(self._file_path, self._console)
@@ -31,32 +34,33 @@ class App:
         self._db_service = DBService()
 
     def run(self):
-        self._pdf_parser.parse()
-        self._text_parser.parse()
-        self._console.print(WarningMessages.CHECK_RESULT_FILE_BEFORE_SAVE % ResultFiles.RESULT_FILE.absolute())
-        allow_save_to_db = self._get_user_answer(Messages.SAVE_TO_DB_PROMPT, SaveToDB.LIST_VALUES, SaveToDB.YES)
+        if not self._args.only_save_db:
+            self._pdf_parser.parse()
+            self._text_parser.parse()
+            self._console.print(WarningMessages.CHECK_RESULT_FILE_BEFORE_SAVE % ResultFiles.RESULT_FILE.absolute())
+            allow_save_to_db = self._get_user_answer(Messages.SAVE_TO_DB_PROMPT, SaveToDB.LIST_VALUES, SaveToDB.YES)
 
-        if allow_save_to_db == SaveToDB.YES:
-            with self._console.status(Messages.SAVING_DATA_TO_DB) as status:
-                self._db_service.clear_database()
-                self._db_service.insert_all(self._create_block_models_from_file(ResultFiles.RESULT_FILE))
-                status.console.log(SuccessMessages.SUCCESS_SAVE_TO_DB % self._db_service.db_path.absolute())
+            if allow_save_to_db == SaveToDB.YES:
+                self._save_result_to_db()
+        else:
+            try:
+                raise_exception_if_file_not_exists(ResultFiles.RESULT_FILE)
+                self._save_result_to_db()
+            except FileNotFoundException as e:
+                self._console.print(e.message)
 
         self._clear_temp_directory()
 
     def _get_file_path(self):
-        arg_parser = argparse.ArgumentParser(description=Messages.HELLO_MESSAGE)
-        arg_parser.add_argument("filename", help=Messages.FILE_HELP)
-        args = arg_parser.parse_args()
-        file_path = Path(args.filename)
+        file_path = Path(self._args.filename)
         try:
-            if not file_path.is_file() or not file_path.exists():
-                raise FileNotFoundException(FileNotFoundException.message % file_path.absolute())
+            raise_exception_if_file_not_exists(file_path)
             if file_path.suffix != ".pdf":
                 raise FileExtensionException
             return file_path
         except (FileNotFoundException, FileExtensionException) as e:
-            self._console.print(ErrorMessages.BASE, e.message)
+            self._console.print(e.message)
+            sys.exit()
 
     @staticmethod
     def _clear_temp_directory():
@@ -89,3 +93,16 @@ class App:
                     )
                     block_param_list.append(block_model)
         return block_param_list
+
+    def _save_result_to_db(self):
+        with self._console.status(Messages.SAVING_DATA_TO_DB) as status:
+            self._db_service.clear_database()
+            self._db_service.insert_all(self._create_block_models_from_file(ResultFiles.RESULT_FILE))
+            status.console.log(SuccessMessages.SUCCESS_SAVE_TO_DB % self._db_service.db_path.absolute())
+
+    @staticmethod
+    def _configure_arg_parser():
+        arg_parser = argparse.ArgumentParser(description=Messages.HELLO_MESSAGE)
+        arg_parser.add_argument("filename", help=Messages.FILE_HELP)
+        arg_parser.add_argument("--only_save_db", action="store_true", help=Messages.ONLY_SAVE_DB)
+        return arg_parser

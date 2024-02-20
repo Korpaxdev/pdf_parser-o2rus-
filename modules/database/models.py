@@ -7,7 +7,7 @@ class BaseTable(DeclarativeBase):
 
 
 class Block(BaseTable):
-    __tablename__ = "Blocks"
+    __tablename__ = "blocks"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     cat_id: Mapped[str] = mapped_column(String)
