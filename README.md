@@ -8,7 +8,8 @@ positional arguments:
 
 options:
   -h, --help      show this help message and exit
-  --only_save_db  Позволяет сохранить данные из result.json в базу данных.Использование возможно только в случае уже сгенерированного файла result.json
+  --only_save_db  Позволяет сохранить данные из result.json в базу данных.
+                  Использование возможно только в случае уже сгенерированного файла result.json
 ```
 
 ## Подробнее про аргумены:
