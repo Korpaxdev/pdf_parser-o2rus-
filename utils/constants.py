@@ -2,17 +2,34 @@ from pathlib import Path
 
 
 class TemporaryFiles:
+    """
+    Содержит константы для временных файлов:
+    TEMP_DIR - временная директория
+    PARSED_FILE - txt файл с результатом парсинга
+    """
+
     TEMP_DIR = Path("temp")
     PARSED_FILE = TEMP_DIR / "parsed.txt"
 
 
 class ResultFiles:
+    """
+    Содержит константы для результирующих файлов:
+    RESULT_DIR - директория с результирующими файлами
+    RESULT_FILE - json файл с результатом работы txt прасинга
+    RESULT_DB - база данных, при сохранении RESULT_FILE в бд
+    """
+
     RESULT_DIR = Path("results")
     RESULT_FILE = RESULT_DIR / "result.json"
     RESULT_DB = RESULT_DIR / "result.db"
 
 
-class SaveToDB:
+class SaveToDBAnswers:
+    """
+    Содержит константы разрешенных ответов пользователя на сохранения информации в бд
+    """
+
     YES = "Y"
     NO = "N"
     LIST_VALUES = [YES, NO]
@@ -23,14 +40,22 @@ class SaveToDB:
 
 
 class ErrorMessages:
+    """
+    Константы для сообщений об ошибках
+    """
+
     BASE = "[bold red]Ошибка[/bold red]: %s"
     ARGUMENT_ERROR = BASE % "В качестве аргумента программы необходимо передать путь до pdf файла"
     FILE_NOT_FOUND = BASE % "Файл по пути: %s не был найден"
     FILE_EXTENSION = BASE % "Поддерживается только файл формата .pdf"
-    SAVE_TO_DB_ANSWER = BASE % f"Допустимые ответы - {SaveToDB.get_string_values()}"
+    SAVE_TO_DB_ANSWER = BASE % f"Допустимые ответы - {SaveToDBAnswers.get_string_values()}"
 
 
 class SuccessMessages:
+    """
+    Константы для успешных сообщений
+    """
+
     BASE = "[bold green]Успешно[/bold green]: %s"
     SUCCESS_SAVE_TO_DB = BASE % f"Данные успешно сохранены в db файл по пути {ResultFiles.RESULT_DB.absolute()}"
     RESULT_FILE_CREATED = BASE % f"Создан файл с результатами по пути {ResultFiles.RESULT_FILE.absolute()}"
@@ -38,6 +63,10 @@ class SuccessMessages:
 
 
 class WarningMessages:
+    """
+    Константы для предупреждающих сообщений
+    """
+
     BASE = "[bold yellow]ВНИМАНИЕ[/bold yellow]: %s"
     CHECK_RESULT_FILE_BEFORE_SAVE = BASE % (
         f"Проверьте результирующий файл перед сохранением в базу данных по пути {ResultFiles.RESULT_FILE.absolute()}\n"
@@ -48,6 +77,10 @@ class WarningMessages:
 
 
 class Messages:
+    """
+    Константы для информирующих сообщений
+    """
+
     HELLO_MESSAGE = "Программа для парсинга pdf файлов и сохранения результата в бд"
     FILE_HELP = "PDF Файл для парсинга"
     PDF_PARSING_START = "Произвожу парсинг файла %s"

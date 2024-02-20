@@ -10,6 +10,8 @@ from utils.patterns import Patterns
 
 
 class TextParser:
+    """Класс для парсинга txt файла с помощью regexp в json объект"""
+
     def __init__(self, console: Console):
         self._console = console
         self._parsed_file = TemporaryFiles.PARSED_FILE
@@ -19,6 +21,14 @@ class TextParser:
         self._text = ""
 
     def parse(self):
+        """
+        Производит парсинг PARSED_FILE по этапам:
+        1. Находит расположение blocks по BLOCK_ITEM pattern
+        2. Вытаскивает информацию по каждому block in blocks (title, data_length, id)
+        3. Находит список детальной информации по параметрам блока (params)
+        4. Создает список с информацией по блоку
+        5. Записывает этот список в self._result_file
+        """
         raise_exception_if_file_not_exists(TemporaryFiles.PARSED_FILE)
         self._read_parsed_file()
 
@@ -45,6 +55,13 @@ class TextParser:
         self._console.log(SuccessMessages.RESULT_FILE_CREATED)
 
     def _find_params(self, block_text: str):
+        """
+        Находит параметры в block_text.
+        Находит детальную информацию по параметрам.
+        Возвращает список с детальной информацией по параметрам блока.
+        :param block_text:str - Текст с информацией по блоку
+        :return: params_data: list[dict] - список с детальной информацией по параметрам блока
+        """
         params_table_head = self._find_value(Patterns.PARAMS_TABLE_HEAD, block_text)
 
         if not params_table_head:
@@ -66,6 +83,13 @@ class TextParser:
         return params_data
 
     def _find_detail_param_info(self, param_name: str, param_paragraph: str):
+        """
+        Находит в self_text расположение детальной информации по r\s*{param_paragraph}\s*{param_name} паттерну
+        Достает из этого расположения информацию: length, scaling, range, spn
+        :param param_name: str Имя параметра
+        :param param_paragraph: str Параграф параметра
+        :return: param_detail_info: dict - словарь с детальной информацией по параметру
+        """
         param_info_pattern = Patterns.PARAM_BLOCK.format(
             name=re.escape(param_name), paragraph=re.escape(param_paragraph)
         )
@@ -87,10 +111,25 @@ class TextParser:
 
     @staticmethod
     def _find_iterable_block(pattern, text):
+        """
+        Возвращает список всех найденных значений из строки text по pattern
+        :param pattern: str с regexp паттерном
+        :param text: str текст, на котором необходимо применить pattern
+        :return: list[Match] - список совпадений с pattern
+        """
         return list(re.finditer(pattern, text, re.M))
 
     @staticmethod
     def _find_value(pattern: str, text: str, group_name: str = ""):
+        """
+        Ищет совпадения по pattern в строке text.
+        Если совпадений нет возвращает None.
+        Если есть совпадения, то возвращает их.
+        :param pattern: str с regexp паттерном
+        :param text: str текст, на котором необходимо применить pattern
+        :param group_name: default = "", имя группы, которое необходимо вернуть
+        :return: None | str | Match[str] - совпадение с pattern
+        """
         match = re.search(pattern, text, re.M)
 
         if not match:
@@ -101,5 +140,8 @@ class TextParser:
         return match.group(1).strip() if match.groups() else match
 
     def _read_parsed_file(self):
+        """
+        Считывает информацию из txt файла в переменную self._text
+        """
         with open(self._parsed_file) as file:
             self._text = file.read()

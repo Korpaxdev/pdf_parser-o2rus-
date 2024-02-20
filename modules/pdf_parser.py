@@ -8,6 +8,8 @@ from utils.file_utils import create_dir
 
 
 class PdfParser:
+    """Класс для парсинга pdf файла в txt"""
+
     def __init__(self, file_path: Path | str, console: Console):
         if not isinstance(file_path, Path):
             file_path = Path(file_path)
@@ -17,7 +19,11 @@ class PdfParser:
         create_dir(TemporaryFiles.TEMP_DIR)
         self._parsed_file = TemporaryFiles.PARSED_FILE
 
-    def parse(self) -> Path:
+    def parse(self):
+        """
+        Производит парсинг pdf файла и сохраняет результат в PARSED_FILE
+        :return: self._parsed_file: Path
+        """
         with self._console.status(Messages.PDF_PARSING_START % self._file_path.name) as status:
             with self._parsed_file.open("w") as file:
                 for page in self._parser.pages:

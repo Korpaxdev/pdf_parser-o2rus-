@@ -6,6 +6,10 @@ from utils.constants import ResultFiles
 
 
 class DBService:
+    """
+    Сервис для работы с SQLITE базой данных через SQLAlchemy
+    """
+
     def __init__(self):
         self.db_path = ResultFiles.RESULT_DB
         self._engine = create_engine(f"sqlite:///{ResultFiles.RESULT_DB}")

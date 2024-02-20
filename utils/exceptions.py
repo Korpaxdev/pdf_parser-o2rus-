@@ -2,6 +2,10 @@ from utils.constants import ErrorMessages
 
 
 class CustomException(Exception):
+    """
+    Кастомных класс Exception с полем message
+    """
+
     message: str = ""
 
     def __init__(self, custom_message: str = ""):

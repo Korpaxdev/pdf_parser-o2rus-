@@ -1,4 +1,20 @@
 class Patterns:
+    """
+    Основные regexp паттерны
+    BLOCK_PARAGRAPH - Параграф
+    BLOCK_ITEM - Заголовок блока вместе с параграфом
+    BLOCK_DATA_LENGTH - Параметр Data Length в блоке
+    BLOCK_DATA_PARAMETER_GROUP - Параметр Parameter Group в блоке
+    BLOCK_DATA_ID - Параметр ID в Parameter Group блока
+    PARAMS_TABLE_HEAD - Таблица с параметрами блока
+    PARAMS - Параметр в таблице PARAMS_TABLE_HEAD
+    PARAM_BLOCK - Параграф и имя параметра (Для нахождения детальной информации по параметру)
+    PARAM_DETAIL_LENGTH - Slot Length у параметра
+    PARAM_DETAIL_SLOT_SCALING - Slot Scaling у параметра
+    PARAM_DETAIL_SLOT_RANGE - Slot Range у параметра
+    PARAM_DETAIL_SPN - SPN у параметра
+    """
+
     BLOCK_PARAGRAPH = r"-71\s*5.3.\d+\?{0,2}"
     BLOCK_ITEM = BLOCK_PARAGRAPH + r"\s+([aA-zZ]+[/&#\s\w]+-\s+\w+)(?=\s)"
     BLOCK_DATA_LENGTH = r"Data\s*Length.*?(?P<length>\w+)"
