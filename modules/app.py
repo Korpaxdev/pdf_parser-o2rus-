@@ -83,7 +83,7 @@ class App:
             for block in json.load(f):
                 for block_params in block["params"]:
                     block_model = Block(
-                        cat_id=block["cat_id"],
+                        id=block["id"],
                         data_length=block["data_length"],
                         name=block_params["name"],
                         rus_name=block_params["rus_name"],

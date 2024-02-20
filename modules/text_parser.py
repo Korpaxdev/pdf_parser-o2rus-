@@ -36,7 +36,7 @@ class TextParser:
             cat_id = self._find_value(Patterns.BLOCK_DATA_ID, block_text)
             data["title"] = element.group(1)
             data["data_length"] = data_length
-            data["cat_id"] = cat_id
+            data["id"] = cat_id
             data["params"] = self._find_params(block_text)
             data_list.append(data)
 

@@ -9,8 +9,8 @@ class BaseTable(DeclarativeBase):
 class Block(BaseTable):
     __tablename__ = "blocks"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    cat_id: Mapped[str] = mapped_column(String)
+    pk: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String)
     data_length: Mapped[str] = mapped_column(String(30))
     name: Mapped[str] = mapped_column(String(100))
     rus_name: Mapped[str] = mapped_column(String, nullable=True)
